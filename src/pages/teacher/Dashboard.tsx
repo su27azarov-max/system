@@ -19,24 +19,33 @@ export function DashboardPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const cadets = getCadets();
-      const allRatings: CadetRating[] = cadets.map((cadet: Cadet) => {
-        const group = groups.find((g: Group) => g.id === cadet.groupId)!;
-        const scores = getScores().filter((s: any) => s.cadetId === cadet.id);
-        const categoryPoints: Record<string, number> = {};
-        categories.forEach((cat: any) => {
-          categoryPoints[cat.id] = getCategoryPoints(cadet.id, cat.id);
-        });
-        return {
-          cadet,
-          group,
-          scores,
-          totalPoints: getTotalPoints(cadet.id),
-          categoryPoints: categoryPoints as CadetRating['categoryPoints'],
-        };
-      });
-      setRatings(allRatings);
-      setLoading(false);
+      try {
+        const cadets = getCadets();
+        const allRatings: CadetRating[] = cadets.map((cadet: Cadet) => {
+          const group = groups.find((g: Group) => g.id === cadet.groupId);
+          if (!group) {
+            console.warn(`Group not found for cadet: ${cadet.fullName}`);
+            return null;
+          }
+          const scores = getScores().filter((s: any) => s.cadetId === cadet.id);
+          const categoryPoints: Record<string, number> = {};
+          categories.forEach((cat: any) => {
+            categoryPoints[cat.id] = getCategoryPoints(cadet.id, cat.id);
+          });
+          return {
+            cadet,
+            group,
+            scores,
+            totalPoints: getTotalPoints(cadet.id),
+            categoryPoints: categoryPoints as CadetRating['categoryPoints'],
+          };
+        }).filter((r): r is CadetRating => r !== null);
+        setRatings(allRatings);
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
     }, 600);
 
     return () => clearTimeout(timer);

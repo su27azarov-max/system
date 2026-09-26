@@ -23,24 +23,29 @@ export function OverallPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const cadets = getCadets();
-      const groups = getGroups();
+      try {
+        const cadets = getCadets();
+        const groups = getGroups();
 
-      const allEntries: OverallEntry[] = cadets
-        .map((cadet: Cadet) => {
-          const group = groups.find((g: Group) => g.id === cadet.groupId);
-          return {
-            rank: 0,
-            fullName: cadet.fullName,
-            groupNumber: group?.number || '',
-            totalPoints: getTotalPoints(cadet.id),
-          };
-        })
-        .sort((a, b) => b.totalPoints - a.totalPoints)
-        .map((entry, index) => ({ ...entry, rank: index + 1 }));
+        const allEntries: OverallEntry[] = cadets
+          .map((cadet: Cadet) => {
+            const group = groups.find((g: Group) => g.id === cadet.groupId);
+            return {
+              rank: 0,
+              fullName: cadet.fullName,
+              groupNumber: group?.number || '',
+              totalPoints: getTotalPoints(cadet.id),
+            };
+          })
+          .sort((a, b) => b.totalPoints - a.totalPoints)
+          .map((entry, index) => ({ ...entry, rank: index + 1 }));
 
-      setEntries(allEntries);
-      setLoading(false);
+        setEntries(allEntries);
+      } catch (error) {
+        console.error('Error loading overall rating:', error);
+      } finally {
+        setLoading(false);
+      }
     }, 400);
 
     return () => clearTimeout(timer);

@@ -21,34 +21,38 @@ export function MyRatingPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const user = getCurrentUser();
-      if (!user || !user.groupId) {
+      try {
+        const user = getCurrentUser();
+        if (!user || !user.groupId) {
+          setLoading(false);
+          return;
+        }
+
+        // Найти курсанта по userId
+        const allCadets = getCadets();
+        const myCadet = allCadets.find((c: Cadet) => c.userId === user.id);
+        if (myCadet) {
+          setCadet(myCadet);
+          const g = getGroups().find((gr: Group) => gr.id === myCadet.groupId);
+          setGroup(g || null);
+          setMyScores(getScoresByCadet(myCadet.id));
+
+          // Подсчитать место в группе
+          const groupCadets = getCadetsByGroup(myCadet.groupId);
+          const ratings = groupCadets.map((c: Cadet) => ({
+            id: c.id,
+            total: getTotalPoints(c.id),
+          }));
+          ratings.sort((a, b) => b.total - a.total);
+          const rank = ratings.findIndex((r: any) => r.id === myCadet.id) + 1;
+          setGroupRank(rank);
+          setGroupTotal(ratings.length);
+        }
+      } catch (error) {
+        console.error('Error loading my rating:', error);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      // Найти курсанта по userId
-      const allCadets = getCadets();
-      const myCadet = allCadets.find((c: Cadet) => c.userId === user.id);
-      if (myCadet) {
-        setCadet(myCadet);
-        const g = getGroups().find((gr: Group) => gr.id === myCadet.groupId);
-        setGroup(g || null);
-        setMyScores(getScoresByCadet(myCadet.id));
-
-        // Подсчитать место в группе
-        const groupCadets = getCadetsByGroup(myCadet.groupId);
-        const ratings = groupCadets.map((c: Cadet) => ({
-          id: c.id,
-          total: getTotalPoints(c.id),
-        }));
-        ratings.sort((a, b) => b.total - a.total);
-        const rank = ratings.findIndex((r: any) => r.id === myCadet.id) + 1;
-        setGroupRank(rank);
-        setGroupTotal(ratings.length);
-      }
-
-      setLoading(false);
     }, 400);
 
     return () => clearTimeout(timer);

@@ -21,15 +21,23 @@ export function StudentPage() {
   const categories = getCategories();
 
   const loadData = () => {
-    if (!id) return;
-    const c = getCadetById(id);
-    if (c) {
-      setCadet(c);
-      const g = getGroups().find((gr: Group) => gr.id === c.groupId);
-      setGroup(g || null);
-      setScores(getScoresByCadet(id));
+    if (!id) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    try {
+      const c = getCadetById(id);
+      if (c) {
+        setCadet(c);
+        const g = getGroups().find((gr: Group) => gr.id === c.groupId);
+        setGroup(g || null);
+        setScores(getScoresByCadet(id));
+      }
+    } catch (error) {
+      console.error('Error loading student data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

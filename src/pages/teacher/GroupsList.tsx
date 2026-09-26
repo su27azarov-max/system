@@ -15,21 +15,26 @@ export function GroupsListPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const groups = getGroups();
-      const data = groups.map((group: Group) => {
-        const cadets = getCadetsByGroup(group.id);
-        const ratings = cadets.map((c: Cadet) => getTotalPoints(c.id));
-        const avg = ratings.length > 0 ? Math.round(ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length) : 0;
-        const max = ratings.length > 0 ? Math.max(...ratings) : 0;
-        return {
-          ...group,
-          count: cadets.length,
-          avgPoints: avg,
-          maxPoints: max,
-        };
-      });
-      setGroupData(data);
-      setLoading(false);
+      try {
+        const groups = getGroups();
+        const data = groups.map((group: Group) => {
+          const cadets = getCadetsByGroup(group.id);
+          const ratings = cadets.map((c: Cadet) => getTotalPoints(c.id));
+          const avg = ratings.length > 0 ? Math.round(ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length) : 0;
+          const max = ratings.length > 0 ? Math.max(...ratings) : 0;
+          return {
+            ...group,
+            count: cadets.length,
+            avgPoints: avg,
+            maxPoints: max,
+          };
+        });
+        setGroupData(data);
+      } catch (error) {
+        console.error('Error loading groups:', error);
+      } finally {
+        setLoading(false);
+      }
     }, 300);
 
     return () => clearTimeout(timer);

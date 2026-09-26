@@ -36,16 +36,25 @@ export function initializeStore(): void {
 
 // ============ AUTH ============
 export function login(email: string, password: string): User | null {
-  const users = getUsers();
-  const user = users.find(u => u.email === email && u.password === password);
-  if (user) {
-    localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(user));
+  try {
+    const users = getUsers();
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(user));
+    }
+    return user || null;
+  } catch (error) {
+    console.error('Login error:', error);
+    return null;
   }
-  return user || null;
 }
 
 export function logout(): void {
-  localStorage.removeItem(STORAGE_KEYS.currentUser);
+  try {
+    localStorage.removeItem(STORAGE_KEYS.currentUser);
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
 }
 
 export function getCurrentUser(): User | null {
@@ -96,19 +105,27 @@ export function getCadetsByGroup(groupId: string): Cadet[] {
 }
 
 export function addCadet(cadet: Omit<Cadet, 'id'>): Cadet {
-  const cadets = getCadets();
-  const newCadet: Cadet = { ...cadet, id: `cadet-${Date.now()}` };
-  cadets.push(newCadet);
-  localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(cadets));
-  return newCadet;
+  try {
+    const cadets = getCadets();
+    const newCadet: Cadet = { ...cadet, id: `cadet-${Date.now()}` };
+    cadets.push(newCadet);
+    localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(cadets));
+    return newCadet;
+  } catch (error) {
+    console.error('addCadet error:', error);
+    return { ...cadet, id: `cadet-error-${Date.now()}` };
+  }
 }
 
 export function deleteCadet(id: string): void {
-  const cadets = getCadets().filter(c => c.id !== id);
-  localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(cadets));
-  // Удаляем все баллы курсанта
-  const scores = getScores().filter(s => s.cadetId !== id);
-  localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
+  try {
+    const cadets = getCadets().filter(c => c.id !== id);
+    localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(cadets));
+    const scores = getScores().filter(s => s.cadetId !== id);
+    localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
+  } catch (error) {
+    console.error('deleteCadet error:', error);
+  }
 }
 
 // ============ SCORES ============
@@ -126,16 +143,25 @@ export function getScoresByCadet(cadetId: string): ScoreRecord[] {
 }
 
 export function addScore(score: Omit<ScoreRecord, 'id'>): ScoreRecord {
-  const scores = getScores();
-  const newScore: ScoreRecord = { ...score, id: `score-${Date.now()}` };
-  scores.push(newScore);
-  localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
-  return newScore;
+  try {
+    const scores = getScores();
+    const newScore: ScoreRecord = { ...score, id: `score-${Date.now()}` };
+    scores.push(newScore);
+    localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
+    return newScore;
+  } catch (error) {
+    console.error('addScore error:', error);
+    return { ...score, id: `score-error-${Date.now()}` };
+  }
 }
 
 export function deleteScore(id: string): void {
-  const scores = getScores().filter(s => s.id !== id);
-  localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
+  try {
+    const scores = getScores().filter(s => s.id !== id);
+    localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(scores));
+  } catch (error) {
+    console.error('deleteScore error:', error);
+  }
 }
 
 // ============ CATEGORIES ============
@@ -149,11 +175,15 @@ export function getCategories(): CategoryConfig[] {
 }
 
 export function updateCategoryMaxPoints(categoryId: ScoreCategory, maxPoints: number): void {
-  const categories = getCategories();
-  const idx = categories.findIndex(c => c.id === categoryId);
-  if (idx !== -1) {
-    categories[idx].maxPoints = maxPoints;
-    localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(categories));
+  try {
+    const categories = getCategories();
+    const idx = categories.findIndex(c => c.id === categoryId);
+    if (idx !== -1) {
+      categories[idx].maxPoints = maxPoints;
+      localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(categories));
+    }
+  } catch (error) {
+    console.error('updateCategoryMaxPoints error:', error);
   }
 }
 
