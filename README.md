@@ -143,6 +143,28 @@ npm run build
 
 ---
 
+## 🚢 Деплой на GitHub Pages
+
+### Автоматический деплой (GitHub Actions)
+
+1. Перейдите в **Settings → Pages** вашего репозитория
+2. В разделе **Source** выберите **GitHub Actions**
+3. Push в ветку `main` автоматически запустит деплой
+4. Приложение будет доступно по адресу: `https://<username>.github.io/<repo-name>/`
+
+### Используемые Actions (актуальные версии):
+| Action | Версия | Назначение |
+|--------|--------|-----------|
+| `actions/checkout` | v4 | Клонирование репозитория |
+| `actions/setup-node` | v4 | Установка Node.js |
+| `actions/configure-pages` | v5 | Настройка GitHub Pages |
+| `actions/upload-pages-artifact` | v3 | Загрузка артефакта (Pages) |
+| `actions/deploy-pages` | v4 | Деплой на GitHub Pages |
+
+> ✅ Все actions используют актуальные runtime и не вызывают предупреждений о Node.js 20.
+
+---
+
 ## 📄 Лицензия
 
 MIT
