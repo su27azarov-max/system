@@ -1,6 +1,8 @@
 /**
  * База данных курсантов
  * Содержит информацию о группах, курсантах и их баллах
+ * 
+ * Максимум баллов неограничен - каждый курсант может набрать любое количество баллов
  */
 
 export interface Group {
@@ -27,7 +29,6 @@ export interface Score {
 export interface Category {
   id: string;
   name: string;
-  maxPoints: number;
 }
 
 // Группы
@@ -38,10 +39,10 @@ export const groups: Group[] = [
 
 // Категории баллов
 export const categories: Category[] = [
-  { id: 'classroom', name: 'Оценки на занятии', maxPoints: 50 },
-  { id: 'independent', name: 'Самостоятельная работа', maxPoints: 30 },
-  { id: 'additional', name: 'Дополнительные задания', maxPoints: 20 },
-  { id: 'articles', name: 'Написание статей', maxPoints: 15 },
+  { id: 'classroom', name: 'Оценки на занятии' },
+  { id: 'independent', name: 'Самостоятельная работа' },
+  { id: 'additional', name: 'Дополнительные задания' },
+  { id: 'articles', name: 'Написание статей' },
 ];
 
 // Курсанты

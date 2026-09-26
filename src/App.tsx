@@ -57,21 +57,12 @@ function App() {
   };
 
   const rating = currentView === 'platoon' ? getPlatoonRating() : getStreamRating();
-  const maxTotalPoints = categories.reduce((sum, cat) => sum + cat.maxPoints, 0);
 
   const getRankBadge = (index: number) => {
     if (index === 0) return '🥇';
     if (index === 1) return '🥈';
     if (index === 2) return '🥉';
     return `${index + 1}`;
-  };
-
-  const getProgressColor = (points: number, max: number) => {
-    const percent = (points / max) * 100;
-    if (percent >= 80) return 'bg-green-500';
-    if (percent >= 50) return 'bg-blue-500';
-    if (percent >= 30) return 'bg-yellow-500';
-    return 'bg-red-500';
   };
 
   return (
@@ -151,8 +142,10 @@ function App() {
             </div>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-sm text-gray-600 mb-1">Максимум баллов</div>
-            <div className="text-3xl font-bold text-gray-900">{maxTotalPoints}</div>
+            <div className="text-sm text-gray-600 mb-1">Лучший результат</div>
+            <div className="text-3xl font-bold text-gray-900">
+              {rating.length > 0 ? Math.max(...rating.map(r => r.totalPoints)) : 0}
+            </div>
           </div>
         </div>
 
@@ -184,16 +177,10 @@ function App() {
                   {categories.map(cat => (
                     <th key={cat.id} className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {cat.name}
-                      <div className="text-xs text-gray-400 font-normal normal-case">
-                        макс. {cat.maxPoints}
-                      </div>
                     </th>
                   ))}
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Итого
-                    <div className="text-xs text-gray-400 font-normal normal-case">
-                      из {maxTotalPoints}
-                    </div>
                   </th>
                 </tr>
               </thead>
@@ -219,25 +206,13 @@ function App() {
                       const points = cadetRating.categoryPoints[cat.id];
                       return (
                         <td key={cat.id} className="px-4 py-4 whitespace-nowrap text-center">
-                          <div className="text-sm font-medium text-gray-900">{points}</div>
-                          <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                            <div
-                              className={`h-1.5 rounded-full ${getProgressColor(points, cat.maxPoints)}`}
-                              style={{ width: `${Math.min((points / cat.maxPoints) * 100, 100)}%` }}
-                            ></div>
-                          </div>
+                          <div className="text-lg font-bold text-gray-900">{points}</div>
                         </td>
                       );
                     })}
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <div className="text-lg font-bold text-gray-900">
+                      <div className="text-2xl font-bold text-blue-600">
                         {cadetRating.totalPoints}
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                        <div
-                          className={`h-2 rounded-full ${getProgressColor(cadetRating.totalPoints, maxTotalPoints)}`}
-                          style={{ width: `${Math.min((cadetRating.totalPoints / maxTotalPoints) * 100, 100)}%` }}
-                        ></div>
                       </div>
                     </td>
                   </tr>
