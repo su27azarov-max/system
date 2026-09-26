@@ -6,8 +6,7 @@ import {
   getCadetTotalPoints, 
   getCadetCategoryPoints,
   getCadetsByGroup,
-  getGroupById,
-  getCadetById
+  getGroupById
 } from './data/database';
 
 type View = 'platoon' | 'stream';
