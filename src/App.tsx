@@ -1,10 +1,13 @@
 /**
  * App.tsx — главный компонент приложения RankKursant
  * Роутинг, авторизация, защита маршрутов
+ * 
+ * ВАЖНО: Используется HashRouter для совместимости с GitHub Pages
+ * (статический хостинг не поддерживает серверную маршрутизацию)
  */
 
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { Layout } from './components/Layout';
 import { ToastContainer } from './components/ui';
@@ -64,7 +67,7 @@ function CadetLayout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ToastContainer />
       <Routes>
         {/* Публичные маршруты */}
@@ -85,6 +88,6 @@ export default function App() {
         {/* 404 */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

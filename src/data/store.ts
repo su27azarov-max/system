@@ -19,14 +19,18 @@ const STORAGE_KEYS = {
 
 // Инициализация хранилища seed-данными при первом запуске
 export function initializeStore(): void {
-  const isInitialized = localStorage.getItem(STORAGE_KEYS.initialized);
-  if (!isInitialized) {
-    localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(seedUsers));
-    localStorage.setItem(STORAGE_KEYS.groups, JSON.stringify(seedGroups));
-    localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(seedCadets));
-    localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(seedScores));
-    localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(defaultCategories));
-    localStorage.setItem(STORAGE_KEYS.initialized, 'true');
+  try {
+    const isInitialized = localStorage.getItem(STORAGE_KEYS.initialized);
+    if (!isInitialized) {
+      localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(seedUsers));
+      localStorage.setItem(STORAGE_KEYS.groups, JSON.stringify(seedGroups));
+      localStorage.setItem(STORAGE_KEYS.cadets, JSON.stringify(seedCadets));
+      localStorage.setItem(STORAGE_KEYS.scores, JSON.stringify(seedScores));
+      localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(defaultCategories));
+      localStorage.setItem(STORAGE_KEYS.initialized, 'true');
+    }
+  } catch (error) {
+    console.error('Ошибка инициализации localStorage:', error);
   }
 }
 
@@ -45,26 +49,42 @@ export function logout(): void {
 }
 
 export function getCurrentUser(): User | null {
-  const data = localStorage.getItem(STORAGE_KEYS.currentUser);
-  return data ? JSON.parse(data) : null;
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.currentUser);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
 }
 
 // ============ USERS ============
 export function getUsers(): User[] {
-  const data = localStorage.getItem(STORAGE_KEYS.users);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.users);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
 }
 
 // ============ GROUPS ============
 export function getGroups(): Group[] {
-  const data = localStorage.getItem(STORAGE_KEYS.groups);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.groups);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
 }
 
 // ============ CADETS ============
 export function getCadets(): Cadet[] {
-  const data = localStorage.getItem(STORAGE_KEYS.cadets);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.cadets);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
 }
 
 export function getCadetById(id: string): Cadet | undefined {
@@ -93,8 +113,12 @@ export function deleteCadet(id: string): void {
 
 // ============ SCORES ============
 export function getScores(): ScoreRecord[] {
-  const data = localStorage.getItem(STORAGE_KEYS.scores);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.scores);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
 }
 
 export function getScoresByCadet(cadetId: string): ScoreRecord[] {
@@ -116,8 +140,12 @@ export function deleteScore(id: string): void {
 
 // ============ CATEGORIES ============
 export function getCategories(): CategoryConfig[] {
-  const data = localStorage.getItem(STORAGE_KEYS.categories);
-  return data ? JSON.parse(data) : defaultCategories;
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.categories);
+    return data ? JSON.parse(data) : defaultCategories;
+  } catch {
+    return defaultCategories;
+  }
 }
 
 export function updateCategoryMaxPoints(categoryId: ScoreCategory, maxPoints: number): void {
