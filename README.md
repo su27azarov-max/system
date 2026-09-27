@@ -1,6 +1,6 @@
 # 🎖️ RankKursant
 
-Система рейтинга курсантов на React + Vite.
+Система рейтинга курсантов на React + TypeScript + Tailwind CSS.
 
 ## 📋 Функционал
 
@@ -26,6 +26,9 @@ npm run dev
 
 # Сборка для production
 npm run build
+
+# Предпросмотр собранной версии
+npm run preview
 ```
 
 ## 📊 Тестовые данные
@@ -85,26 +88,31 @@ jobs:
 ## 🎨 Технологии
 
 - React 18
-- Vite 5
-- Inline стили (без CSS фреймворков)
+- TypeScript 5.6
+- Vite 6
+- Tailwind CSS 4
 
 ## 📁 Структура проекта
 
 ```
 .
-├── index.html          # Точка входа
-├── package.json        # Зависимости
-├── vite.config.js      # Конфигурация Vite
+├── index.html              # Точка входа
+├── package.json            # Зависимости
+├── vite.config.js          # Конфигурация Vite
+├── tsconfig.json           # Конфигурация TypeScript
 ├── src/
-│   ├── main.jsx       # Инициализация React
-│   └── App.jsx        # Главный компонент
-└── dist/              # Собранная версия (после npm run build)
+│   ├── main.tsx           # Инициализация React
+│   ├── App.tsx            # Главный компонент
+│   ├── index.css          # Стили Tailwind
+│   └── vite-env.d.ts      # Типы Vite
+└── dist/                   # Собранная версия (после npm run build)
 ```
 
 ## ✨ Особенности
 
 - ✅ Относительные пути (работает на GitHub Pages)
-- ✅ Inline стили (не требует дополнительных файлов)
+- ✅ TypeScript для типобезопасности
+- ✅ Tailwind CSS для стилизации
 - ✅ Адаптивный дизайн
 - ✅ Быстрая загрузка (~150 KB)
 
