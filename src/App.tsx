@@ -154,35 +154,45 @@ export default function App() {
   const group = groups.find(g => g.id === selectedGroupId);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* Header */}
-      <header className="bg-slate-900 text-white py-6 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold">🎖️ RankKursant</h1>
-          <p className="text-slate-300 mt-1">Система рейтинга курсантов</p>
+      <header style={{ backgroundColor: '#0f172a', color: 'white', padding: '1.5rem' }}>
+        <div style={{ maxWidth: '80rem', margin: '0 auto' }}>
+          <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', margin: 0 }}>🎖️ RankKursant</h1>
+          <p style={{ color: '#cbd5e1', marginTop: '0.25rem' }}>Система рейтинга курсантов</p>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="max-w-7xl mx-auto flex gap-4">
+      <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #e5e7eb', padding: '1rem' }}>
+        <div style={{ maxWidth: '80rem', margin: '0 auto', display: 'flex', gap: '1rem' }}>
           <button
             onClick={() => setCurrentView('platoon')}
-            className={`px-6 py-2 font-medium border-b-2 transition-colors ${
-              currentView === 'platoon'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-blue-600'
-            }`}
+            style={{
+              padding: '0.5rem 1.5rem',
+              fontWeight: '500',
+              background: 'none',
+              border: 'none',
+              borderBottom: currentView === 'platoon' ? '2px solid #2563eb' : '2px solid transparent',
+              color: currentView === 'platoon' ? '#2563eb' : '#4b5563',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
           >
             Рейтинг взвода
           </button>
           <button
             onClick={() => setCurrentView('stream')}
-            className={`px-6 py-2 font-medium border-b-2 transition-colors ${
-              currentView === 'stream'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-blue-600'
-            }`}
+            style={{
+              padding: '0.5rem 1.5rem',
+              fontWeight: '500',
+              background: 'none',
+              border: 'none',
+              borderBottom: currentView === 'stream' ? '2px solid #2563eb' : '2px solid transparent',
+              color: currentView === 'stream' ? '#2563eb' : '#4b5563',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
           >
             Рейтинг потока
           </button>
@@ -190,17 +200,17 @@ export default function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main style={{ maxWidth: '80rem', margin: '0 auto', padding: '2rem 1rem' }}>
         {/* Group Selector */}
         {currentView === 'platoon' && (
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
               Выберите взвод:
             </label>
             <select
               value={selectedGroupId}
               onChange={(e) => setSelectedGroupId(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              style={{ padding: '0.5rem 1rem', border: '1px solid #d1d5db', borderRadius: '0.5rem', fontSize: '1rem' }}
             >
               {groups.map(g => (
                 <option key={g.id} value={g.id}>{g.number} - {g.name}</option>
@@ -210,74 +220,68 @@ export default function App() {
         )}
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-sm text-gray-600 mb-1">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+          <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+            <div style={{ fontSize: '0.875rem', color: '#4b5563', marginBottom: '0.25rem' }}>
               {currentView === 'platoon' ? 'Курсантов во взводе' : 'Всего курсантов'}
             </div>
-            <div className="text-3xl font-bold text-gray-900">{rating.length}</div>
+            <div style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#111827' }}>{rating.length}</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-sm text-gray-600 mb-1">Средний балл</div>
-            <div className="text-3xl font-bold text-gray-900">{avg}</div>
+          <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+            <div style={{ fontSize: '0.875rem', color: '#4b5563', marginBottom: '0.25rem' }}>Средний балл</div>
+            <div style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#111827' }}>{avg}</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-sm text-gray-600 mb-1">Лучший результат</div>
-            <div className="text-3xl font-bold text-gray-900">{max}</div>
+          <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+            <div style={{ fontSize: '0.875rem', color: '#4b5563', marginBottom: '0.25rem' }}>Лучший результат</div>
+            <div style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#111827' }}>{max}</div>
           </div>
         </div>
 
         {/* Rating Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">
+        <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+          <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #e5e7eb' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#111827', margin: 0 }}>
               {currentView === 'platoon' 
                 ? `Рейтинг взвода ${group?.number}`
                 : 'Рейтинг потока (все взводы)'}
             </h2>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Место</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+                  <th style={{ padding: '0.75rem 1.5rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase' }}>Место</th>
+                  <th style={{ padding: '0.75rem 1.5rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase' }}>ФИО</th>
                   {currentView === 'stream' && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Взвод</th>
+                    <th style={{ padding: '0.75rem 1.5rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase' }}>Взвод</th>
                   )}
                   {categories.map(cat => (
-                    <th key={cat.id} className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {cat.name}
-                    </th>
+                    <th key={cat.id} style={{ padding: '0.75rem 1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase' }}>{cat.name}</th>
                   ))}
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Итого</th>
+                  <th style={{ padding: '0.75rem 1.5rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase' }}>Итого</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody>
                 {rating.map((cadetRating, index) => (
-                  <tr key={cadetRating.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-2xl">
+                  <tr key={cadetRating.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '1.5rem' }}>
                       {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{cadetRating.fullName}</div>
+                    <td style={{ padding: '1rem 1.5rem' }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#111827' }}>{cadetRating.fullName}</div>
                     </td>
                     {currentView === 'stream' && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-600">
-                          {groups.find(g => g.id === cadetRating.groupId)?.number}
-                        </div>
+                      <td style={{ padding: '1rem 1.5rem' }}>
+                        <div style={{ fontSize: '0.875rem', color: '#4b5563' }}>{groups.find(g => g.id === cadetRating.groupId)?.number}</div>
                       </td>
                     )}
                     {categories.map(cat => (
-                      <td key={cat.id} className="px-4 py-4 whitespace-nowrap text-center">
-                        <div className="text-lg font-bold text-gray-900">
-                          {cadetRating.categoryPoints[cat.id]}
-                        </div>
+                      <td key={cat.id} style={{ padding: '1rem', textAlign: 'center' }}>
+                        <div style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#111827' }}>{cadetRating.categoryPoints[cat.id]}</div>
                       </td>
                     ))}
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <div className="text-2xl font-bold text-blue-600">{cadetRating.totalPoints}</div>
+                    <td style={{ padding: '1rem 1.5rem', textAlign: 'center' }}>
+                      <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb' }}>{cadetRating.totalPoints}</div>
                     </td>
                   </tr>
                 ))}
